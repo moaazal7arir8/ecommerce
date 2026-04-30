@@ -29,10 +29,11 @@ Route::prefix('user')->middleware('auth:sanctum')->group(function () {
 
     Route::get('/showUserNotificationsNumber', [NotificationController::class, 'showUserNotificationsNumber']);
     Route::get('/showUserNotifications', [NotificationController::class, 'showUserNotifications']);
+
 });
 
 
-
+//المعلم الحريري
 
 
 
