@@ -9,9 +9,10 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\MonthlySalesReportController;
 
 Route::post('/user/register', [UserController::class, 'register']);
-Route::post('/user/login', [UserController::class, 'login']);
+Route::post('/user/login', [UserController::class, 'login'])->middleware('throttle:againstBruteForce');
 
 Route::prefix('user')->middleware('auth:sanctum')->group(function () {
 
@@ -24,16 +25,14 @@ Route::prefix('user')->middleware('auth:sanctum')->group(function () {
     Route::post('/deleteCart/{id}', [CartController::class, 'deleteCart']);
     Route::get('/showUserCarts', [CartController::class, 'showUserCarts']);
 
-    Route::post('/createOrder/{id}', [OrderController::class, 'createOrder']);
+    Route::post('/createOrder1/{id}', [OrderController::class, 'createOrder1']);
+    Route::post('/createOrder2/{id}', [OrderController::class, 'createOrder2']);
+
     Route::get('/showUserOrders', [OrderController::class, 'showUserOrders']);
 
     Route::get('/showUserNotificationsNumber', [NotificationController::class, 'showUserNotificationsNumber']);
     Route::get('/showUserNotifications', [NotificationController::class, 'showUserNotifications']);
-
 });
-
-
-//المعلم الحريري
 
 
 
@@ -55,4 +54,7 @@ Route::prefix('admin')->middleware('auth:sanctum')->group(function () {
     Route::post('/deleteProduct/{id}', [ProductController::class, 'deleteProduct']);
 
     Route::post('/sendNotificationToAll', [NotificationController::class, 'sendNotificationToAll']);
-});
+
+    Route::post('/runMonthlyInventory1', [MonthlySalesReportController::class, 'runMonthlyInventory1']);
+    Route::post('/runMonthlyInventory2', [MonthlySalesReportController::class, 'runMonthlyInventory2']);
+    });

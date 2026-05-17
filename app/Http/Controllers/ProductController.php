@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use Illuminate\Support\facades\DB;
 use Illuminate\Support\facades\Storage;
+use Illuminate\Support\Facades\Cache;
 
 class ProductController extends Controller
 {
@@ -16,7 +17,7 @@ class ProductController extends Controller
             'name' => 'required|max:40|string',
             'quantity' => 'required|min:1|integer',
             'price' => 'required|numeric',
-            'profit'=>'required|numeric',
+            'profit' => 'required|numeric',
             'describtion' => 'nullable|string|max:255',
             'image' => 'nullable|image|mimes:png,jpg,jpeg,gif'
         ]);
@@ -38,6 +39,18 @@ class ProductController extends Controller
             }
         }
         $product = Product::create($validateData);
+        $page = 1;
+
+        while (true) {
+            $key = 'category_products_' . $id . '_page_' . $page;
+
+            if (!Cache::has($key)) {
+                break;
+            }
+
+            Cache::forget($key);
+            $page++;
+        }
         return response()->json([
             'رسالة' => 'تم إنشاء المنتج بنجاح',
         ]);
@@ -50,7 +63,7 @@ class ProductController extends Controller
             'name' => 'max:40|string',
             'quantity' => 'min:1|integer',
             'price' => 'numeric',
-            'profit'=>'numeric',
+            'profit' => 'numeric',
             'describtion' => 'string|max:255',
             'image' => 'image|mimes:png,jpg,jpeg,gif'
         ]);
@@ -69,6 +82,19 @@ class ProductController extends Controller
             $validateData['image'] = $path;
         }
         $product->update($validateData);
+
+        $categoryId=$product->category->id;
+        $page = 1;
+        while (true) {
+            $key = 'category_products_' . $categoryId . '_page_' . $page;
+
+            if (!Cache::has($key)) {
+                break;
+            }
+
+            Cache::forget($key);
+            $page++;
+        }
         return response()->json([
             'رسالة' => 'تم التعديل',
         ]);
@@ -84,7 +110,20 @@ class ProductController extends Controller
         if ($product->image && Storage::disk('public')->exists($product->image)) {
             Storage::disk('public')->delete($product->image);
         }
+        $categoryId=$product->category->id;
         $product->delete();
+     
+        $page = 1;
+        while (true) {
+            $key = 'category_products_' . $categoryId . '_page_' . $page;
+
+            if (!Cache::has($key)) {
+                break;
+            }
+
+            Cache::forget($key);
+            $page++;
+        }
         return response()->json([
             'رسالة' => 'تم حذف المنتج'
         ]);

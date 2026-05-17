@@ -24,7 +24,8 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
-        'numberOfNotifications'
+        'numberOfNotifications',
+        'wallet'
     ];
     public function device_tokens()
     {

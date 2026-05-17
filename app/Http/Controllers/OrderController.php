@@ -2,20 +2,40 @@
 
 namespace App\Http\Controllers;
 
+
+use App\Models\DeviceToken;
+use App\Models\Notification as NotificationModel;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
+
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use App\Models\User;
+use Kreait\Firebase\Messaging\CloudMessage;
+use Kreait\Firebase\Messaging\Notification as FirebaseNotification;
+use Kreait\Laravel\Firebase\Facades\Firebase;
+
 use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Cart;
+use App\Models\Product;
 use Illuminate\Support\facades\Auth;
+use App\Jobs\ProcessOrderJob;
 
 class OrderController extends Controller
 {
-    public function createOrder(Request $request, $id)
+
+    public function createOrder2(Request $request, $id)
     {
         $validateData = $request->validate([
             'address' => 'required|string'
         ]);
-        $cart = Cart::with('items.product')
+
+        $cart = Cart::with('items')
             ->where('id', $id)
             ->first();
 
@@ -25,54 +45,97 @@ class OrderController extends Controller
             ], 400);
         }
 
-        $totalPrice = 0;
-        $profits = 0;
-        foreach ($cart->items as $item) {
-            $product = $item->product;
+        ProcessOrderJob::dispatch(
+            $cart->id,
+            Auth::id(),
+            $validateData['address']
+        );
+
+        return response()->json([
+            'message' => 'جار معالجة طلبك'
+        ]);
+    }
+    public function createOrder1(Request $request, $id)
+    {
+        $validateData = $request->validate([
+            'address' => 'required|string'
+        ]);
+
+        $user = User::find(Auth::id());
+
+        $cart = Cart::with('items')
+            ->where('id', $id)
+            ->first();
+
+        if (!$cart || $cart->items->isEmpty()) {
+            return response()->json([
+                'message' => 'Cart is empty'
+            ], 400);
+        }
+
+        $total = 0;
+        $items = $cart->items;
+
+        $productIds = $items->pluck('product_id')->unique();
+
+        $products = Product::whereIn('id', $productIds)
+            ->get()
+            ->keyBy('id');
+
+        foreach ($items as $item) {
+
+            $product = $products[$item->product_id] ?? null;
 
             if (!$product) {
-                return response()->json([
-                    'message' => 'بطلبك هناك منتج غير موجود أعد المحاولة من جديد'
-                ], 404);
-            }
-
-            if ($item->item_quantity <= 0) {
-                return response()->json([
-                    'message' => 'المنتج التالي اانتهت كميته لدينا' . $product->name
-                ], 400);
+                return response()->json(
+                    ['message' => 'أحد المنتجات غير متوفرة']
+                    , 400);
             }
 
             if ($product->quantity < $item->item_quantity) {
-                return response()->json([
-                    'message' => 'لا يتوفر لدينا الكمية الكافيه من المنتج التالي ' . $product->name
-                ], 400);
-            }
-            $price = $item->product->price ?? 0;
-            $totalPrice += $price * $item->item_quantity;
 
-            $profit = $item->product->profit ?? 0;
-            $profits += $profit * $item->item_quantity;
+                return response()->json(
+                    ['message' => 'أحد المنتجات غير متوفرة بالكمية المطلوبة']
+                    , 400);
+            }
+            $total += $product->price * $item->item_quantity;
         }
 
+        if ($user->wallet < $total) {
+
+            return response()->json([
+                'message' => 'النقود في محفظتك لا تكفي لشراء الطلب'
+            ]);
+        }
+        $user->update([
+            'wallet'=>$user->wallet-$total
+        ]);
+
         $order = Order::create([
-            'user_id' => Auth::id(),
-            'total_price' => $totalPrice,
-            'profits' => $profits,
+            'user_id' => $user->id,
             'status' => 'pending',
             'address' => $validateData['address']
         ]);
-        foreach ($cart->items as $item) {
+
+        foreach ($items as $item) {
+
+            $product = $products[$item->product_id];
+
             OrderItem::create([
-                'price' => $item->product->price,
+                'price' => $product->price,
+                'profit' => $product->profit,
                 'order_id' => $order->id,
                 'product_id' => $item->product_id,
                 'item_quantity' => $item->item_quantity,
             ]);
-            $item->product->decrement('quantity', $item->item_quantity);
+
+            $product->update([
+                'quantity'=>$product->quantity-$item->item_quantity
+            ]);
         }
         return response()->json([
-            'message' => 'Order created successfully',
-            'order' => $order
+            'message' => 'تم قيول طلبك بنجاح',
+            'order_id' => $order->id
         ]);
     }
     public function showUserOrders()

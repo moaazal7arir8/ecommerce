@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->enum('role', ['admin', 'user'])->default('user');
             $table->integer('numberOfNotifications')->default(0);
+            $table->decimal('wallet', 8, 2)->default(0);
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
