@@ -25,8 +25,8 @@ Route::prefix('user')->middleware('auth:sanctum')->group(function () {
     Route::post('/deleteCart/{id}', [CartController::class, 'deleteCart']);
     Route::get('/showUserCarts', [CartController::class, 'showUserCarts']);
 
-    Route::post('/createOrder1/{id}', [OrderController::class, 'createOrder1']);
-    Route::post('/createOrder2/{id}', [OrderController::class, 'createOrder2']);
+    Route::post('/createOrder1/{id}', [OrderController::class, 'createOrder1']);//قبل تنفيذ أفكار الطلب الأول والثالث
+    Route::post('/createOrder2/{id}', [OrderController::class, 'createOrder2']);//بعد تنفيذأفكار الطلب الأول والثالث
 
     Route::get('/showUserOrders', [OrderController::class, 'showUserOrders']);
 
@@ -55,6 +55,6 @@ Route::prefix('admin')->middleware('auth:sanctum')->group(function () {
 
     Route::post('/sendNotificationToAll', [NotificationController::class, 'sendNotificationToAll']);
 
-    Route::post('/runMonthlyInventory1', [MonthlySalesReportController::class, 'runMonthlyInventory1']);
-    Route::post('/runMonthlyInventory2', [MonthlySalesReportController::class, 'runMonthlyInventory2']);
+    Route::post('/runMonthlyInventory1', [MonthlySalesReportController::class, 'runMonthlyInventory1']);//(الجردالشهري)قبل تنفيذ افكار
+    Route::post('/runMonthlyInventory2', [MonthlySalesReportController::class, 'runMonthlyInventory2']);//(الجردالشهري)بعد تنفيذ أفكار
     });
