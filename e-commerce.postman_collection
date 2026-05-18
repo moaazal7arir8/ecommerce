@@ -1,0 +1,1291 @@
+{
+  "info": {
+    "_postman_id": "324325a4-3f67-43a4-bedd-d39ee0caac02",
+    "name": "ecommerce",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "39770864",
+    "_collection_link": "https://go.postman.co/collection/39770864-324325a4-3f67-43a4-bedd-d39ee0caac02?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "admin",
+      "item": [
+        {
+          "name": "auth",
+          "item": [
+            {
+              "name": "register",
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "key": "name",
+                      "value": "moaaz",
+                      "type": "text",
+                      "uuid": "8b04d7b3-b915-4444-8fc5-5373555eb8d6"
+                    },
+                    {
+                      "key": "email",
+                      "value": "moaaz@gmail.com",
+                      "type": "text",
+                      "uuid": "679decf2-55d3-4f18-a418-62f1fb13e954"
+                    },
+                    {
+                      "key": "password",
+                      "value": "12345678",
+                      "type": "text",
+                      "uuid": "ed94cfa6-af33-4d5c-becd-dc6c2d30ffff"
+                    },
+                    {
+                      "key": "password_confirmation",
+                      "value": "12345678",
+                      "type": "text",
+                      "uuid": "7eac8735-ef49-4cca-b761-1c060e8eb70d"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/admin/register",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "admin",
+                    "register"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "login",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "email",
+                      "value": "moaaz@gmail.com",
+                      "type": "text",
+                      "uuid": "85bc2ad4-1912-4546-b6f4-0e576123866e"
+                    },
+                    {
+                      "key": "password",
+                      "value": "12345678",
+                      "type": "text",
+                      "uuid": "08670a03-07eb-489b-93da-4c9b703afa90"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/admin/login",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "admin",
+                    "login"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "logout",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "6|RFICwoF0n19GR05yZmKRDHdGjfKwHwa3nB09k9nV7511f9df",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/admin/logout",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "admin",
+                    "logout"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "category",
+          "item": [
+            {
+              "name": "createCategory",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "1|ZPgnPOyY4CrUGLO1JgLsinghQNaNpMIEwtALEBOp59db4e0b",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "name",
+                      "value": "أجوات بناء",
+                      "type": "text",
+                      "uuid": "e9e54e2d-a765-4e34-9e8b-a772806619da"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/admin/createCategory",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "admin",
+                    "createCategory"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "updateCategory",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "6|RFICwoF0n19GR05yZmKRDHdGjfKwHwa3nB09k9nV7511f9df",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "name",
+                      "value": "صحية",
+                      "type": "text",
+                      "uuid": "a6ba44ab-72ad-4c57-b151-e2e498cc6551"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/admin/updateCategory/1",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "admin",
+                    "updateCategory",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "deleteCategory",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "2|CMSaiJpGc6sGiD96p6eTMEOWZP9TebGsl4zcp9mfd57dc245",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "email",
+                      "value": "moaaz@gmail.com",
+                      "type": "text",
+                      "uuid": "85bc2ad4-1912-4546-b6f4-0e576123866e"
+                    },
+                    {
+                      "key": "password",
+                      "value": "12345678",
+                      "type": "text",
+                      "uuid": "08670a03-07eb-489b-93da-4c9b703afa90"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/admin/deleteCategory/1",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "admin",
+                    "deleteCategory",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "showCategories",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "8|3scsdkaFzppuD8RpiU3FqRb85Pk0fKWmOKT9by1Ibc9f37ba",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/admin/showCategories",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "admin",
+                    "showCategories"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "showCategoryProducts",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "8|3scsdkaFzppuD8RpiU3FqRb85Pk0fKWmOKT9by1Ibc9f37ba",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/admin/showCategoryProducts/3",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "admin",
+                    "showCategoryProducts",
+                    "3"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "product",
+          "item": [
+            {
+              "name": "createProduct",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "1|ZPgnPOyY4CrUGLO1JgLsinghQNaNpMIEwtALEBOp59db4e0b",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "name",
+                      "value": "طرش هايسير",
+                      "type": "text",
+                      "uuid": "e9e54e2d-a765-4e34-9e8b-a772806619da"
+                    },
+                    {
+                      "key": "quantity",
+                      "value": "100",
+                      "type": "text",
+                      "uuid": "566ea4bb-4fa4-481e-9386-df1c3687d30f"
+                    },
+                    {
+                      "key": "price",
+                      "value": "99.99",
+                      "type": "text",
+                      "uuid": "a19dbbd0-0655-4099-a277-348dcfc3929b"
+                    },
+                    {
+                      "key": "profit",
+                      "value": "20",
+                      "type": "text",
+                      "uuid": "2e1fe720-2b7b-42eb-86a4-39bcabd2e71c"
+                    },
+                    {
+                      "key": "describtion",
+                      "value": "نوع اول",
+                      "type": "text",
+                      "uuid": "9ce72714-de2c-4077-ab88-74a3e511920b"
+                    },
+                    {
+                      "key": "image",
+                      "type": "file",
+                      "uuid": "de2c1c79-d8fa-4c2d-92fb-84a3d6554d1a",
+                      "src": "postman-cloud:///1f1445bd-35da-4b40-8032-467b974769a6"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/admin/createProduct/1",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "admin",
+                    "createProduct",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "updateProduct",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "1|UlVSufQrhfiPjCdXSzbOXWEGOXvbpffMSxf7Xiny672c0e1d",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "name",
+                      "value": "خخخخ",
+                      "type": "text",
+                      "uuid": "e9e54e2d-a765-4e34-9e8b-a772806619da"
+                    },
+                    {
+                      "key": "quantity",
+                      "value": "90",
+                      "type": "text",
+                      "uuid": "14569678-6e96-4311-bebc-be508f0ea698"
+                    },
+                    {
+                      "key": "price",
+                      "value": "999.99",
+                      "type": "text",
+                      "uuid": "de75c13a-8bd7-4b9a-8475-b642d56988e0"
+                    },
+                    {
+                      "key": "profit",
+                      "value": "300",
+                      "type": "text",
+                      "uuid": "3ccaa4c7-377d-4c88-8c2e-f8acce28c4c8"
+                    },
+                    {
+                      "key": "describtion",
+                      "value": "ممتازين",
+                      "type": "text",
+                      "uuid": "8d8df200-a09f-465a-8ffa-883514b31dcf"
+                    },
+                    {
+                      "key": "image",
+                      "type": "file",
+                      "uuid": "0f321e5a-725c-4d81-87d6-7d6ad2a982f8",
+                      "src": "postman-cloud:///1f028ed2-e50c-41d0-8a8c-e46818b94122"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/admin/updateProduct/18",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "admin",
+                    "updateProduct",
+                    "18"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "deleteProduct",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "1|UlVSufQrhfiPjCdXSzbOXWEGOXvbpffMSxf7Xiny672c0e1d",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/admin/deleteProduct/18",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "admin",
+                    "deleteProduct",
+                    "18"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "reports",
+          "item": [
+            {
+              "name": "generateReport",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "2|jMZub3eid0xOCJ0kD67ZjvWaUs6r0v7P5Bir9fGD16c9acb6",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/admin/runMonthlyInventory1",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "admin",
+                    "runMonthlyInventory1"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "sendNotificationToAll",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "8|3scsdkaFzppuD8RpiU3FqRb85Pk0fKWmOKT9by1Ibc9f37ba",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "title",
+                  "value": "زباينا الكرام",
+                  "type": "text",
+                  "uuid": "f02f64ec-23c7-447d-8b65-4d61860a7170"
+                },
+                {
+                  "key": "body",
+                  "value": "هناك تخفيضات ",
+                  "type": "text",
+                  "uuid": "4bae6dad-02f2-4217-bb67-58a1cff042f5"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/admin/sendNotificationToAll",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "admin",
+                "sendNotificationToAll"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "user",
+      "item": [
+        {
+          "name": "auth",
+          "item": [
+            {
+              "name": "register",
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "key": "name",
+                      "value": "obadah",
+                      "type": "text",
+                      "uuid": "8b04d7b3-b915-4444-8fc5-5373555eb8d6"
+                    },
+                    {
+                      "key": "email",
+                      "value": "obadah@gmaial.com",
+                      "type": "text",
+                      "uuid": "679decf2-55d3-4f18-a418-62f1fb13e954"
+                    },
+                    {
+                      "key": "password",
+                      "value": "12345678",
+                      "type": "text",
+                      "uuid": "ed94cfa6-af33-4d5c-becd-dc6c2d30ffff"
+                    },
+                    {
+                      "key": "password_confirmation",
+                      "value": "12345678",
+                      "type": "text",
+                      "uuid": "7eac8735-ef49-4cca-b761-1c060e8eb70d"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/user/register",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "user",
+                    "register"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "login",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "email",
+                      "value": "obadah@gmaial.com",
+                      "type": "text",
+                      "uuid": "85bc2ad4-1912-4546-b6f4-0e576123866e"
+                    },
+                    {
+                      "key": "password",
+                      "value": "12345678",
+                      "type": "text",
+                      "uuid": "08670a03-07eb-489b-93da-4c9b703afa90"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/user/login",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "user",
+                    "login"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "logout",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "11|Ar55qPtAkxP0JjwEz8vhWG6nDqqmULWsBbzbNNAr4008328a",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/user/logout",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "user",
+                    "logout"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "category",
+          "item": [
+            {
+              "name": "showCategories",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "12|Q0wOZJvKjIZVOPWb9nLmtORcwY3bwRgPyQWCn7gWdfa7b84c",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/user/showCategories",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "user",
+                    "showCategories"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "showCategoryProducts",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "1|UlVSufQrhfiPjCdXSzbOXWEGOXvbpffMSxf7Xiny672c0e1d",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/user/showCategoryProducts/1",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "user",
+                    "showCategoryProducts",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "cart",
+          "item": [
+            {
+              "name": "createCart",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "4|wFi5ZE1YrqRhN1r2Xhc2nq5MKB0Xkn6Tq5iflmRI0ecc4485",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"items\": [\r\n    {\r\n      \"product_id\": 1,\r\n      \"quantity\": 1\r\n    },\r\n    {\r\n      \"product_id\": 2,\r\n      \"quantity\": 1\r\n    },\r\n    {\r\n      \"product_id\": 3,\r\n      \"quantity\": 1\r\n    },\r\n    {\r\n      \"product_id\": 4,\r\n      \"quantity\": 1\r\n    },\r\n    {\r\n      \"product_id\": 5,\r\n      \"quantity\": 1\r\n    },\r\n    {\r\n      \"product_id\": 6,\r\n      \"quantity\": 1\r\n    },\r\n    {\r\n      \"product_id\": 7,\r\n      \"quantity\": 1\r\n    },\r\n    {\r\n      \"product_id\": 8,\r\n      \"quantity\": 1\r\n    },\r\n    {\r\n      \"product_id\": 9,\r\n      \"quantity\": 1\r\n    },\r\n    {\r\n      \"product_id\": 10,\r\n      \"quantity\": 1\r\n    }\r\n  ]\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/user/createCart",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "user",
+                    "createCart"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "deleteCart",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "12|Q0wOZJvKjIZVOPWb9nLmtORcwY3bwRgPyQWCn7gWdfa7b84c",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/user/deleteCart/1",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "user",
+                    "deleteCart",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "showUserCarts",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "12|Q0wOZJvKjIZVOPWb9nLmtORcwY3bwRgPyQWCn7gWdfa7b84c",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/user/showUserCarts",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "user",
+                    "showUserCarts"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "order",
+          "item": [
+            {
+              "name": "createOrder",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "5|4QEjRPFexAu9vBduaslkBFZBg4UuBFu4veokDkaE044128e3",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "address",
+                      "value": "ساحة الأمويين",
+                      "type": "text",
+                      "uuid": "abce92a9-a244-46f8-bfe9-fd7ba1bc421b"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/user/createOrder1/1",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "user",
+                    "createOrder1",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "showUserOrders",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "13|ZCFgP29phy0Fcb0jkHyh3c7MxiI1ypbJGNhRaCKW217db5c9",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/user/showUserOrders",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "user",
+                    "showUserOrders"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "notifications",
+          "item": [
+            {
+              "name": "showUserNotifications",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "13|ZCFgP29phy0Fcb0jkHyh3c7MxiI1ypbJGNhRaCKW217db5c9",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/user/showUserNotifications",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "user",
+                    "showUserNotifications"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "showUserNotificationsNumber",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "13|ZCFgP29phy0Fcb0jkHyh3c7MxiI1ypbJGNhRaCKW217db5c9",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/user/showUserNotificationsNumber",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "user",
+                    "showUserNotificationsNumber"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
