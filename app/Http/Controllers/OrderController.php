@@ -52,7 +52,8 @@ class OrderController extends Controller
         );
 
         return response()->json([
-            'message' => 'جار معالجة طلبك'
+            'message' => 'جار معالجة طلبك',
+            'server' => env('APP_NAME')
         ]);
     }
     public function createOrder1(Request $request, $id)
