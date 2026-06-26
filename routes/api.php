@@ -11,6 +11,15 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\MonthlySalesReportController;
 
+Route::get('/server', function () {
+
+    return response()->json([
+        'server' => 'SERVER 2'
+    ]);
+
+});
+
+
 Route::post('/user/register', [UserController::class, 'register']);
 Route::post('/user/login', [UserController::class, 'login'])->middleware('throttle:againstBruteForce');
 
@@ -20,13 +29,15 @@ Route::prefix('user')->middleware('auth:sanctum')->group(function () {
 
     Route::get('/showCategories', [CategoryController::class, 'showCategories']);
     Route::get('/showCategoryProducts/{id}', [CategoryController::class, 'showCategoryProducts']);
+    Route::get('/showTrendProducts', [CategoryController::class, 'showTrendProducts']);
+
 
     Route::post('/createCart', [CartController::class, 'createCart']);
     Route::post('/deleteCart/{id}', [CartController::class, 'deleteCart']);
     Route::get('/showUserCarts', [CartController::class, 'showUserCarts']);
 
-    Route::post('/createOrder1/{id}', [OrderController::class, 'createOrder1']);//قبل تنفيذ أفكار الطلب الأول والثالث
-    Route::post('/createOrder2/{id}', [OrderController::class, 'createOrder2']);//بعد تنفيذأفكار الطلب الأول والثالث
+    Route::post('/createOrder1', [OrderController::class, 'createOrder1']);//قبل تنفيذ أفكار الطلب الأول والثالث
+    Route::post('/createOrder2', [OrderController::class, 'createOrder2']);//بعد تنفيذأفكار الطلب الأول والثالث
 
     Route::get('/showUserOrders', [OrderController::class, 'showUserOrders']);
 
@@ -48,6 +59,8 @@ Route::prefix('admin')->middleware('auth:sanctum')->group(function () {
     Route::post('/deleteCategory/{id}', [CategoryController::class, 'deleteCategory']);
     Route::get('/showCategories', [CategoryController::class, 'showCategories']);
     Route::get('/showCategoryProducts/{id}', [CategoryController::class, 'showCategoryProducts']);
+    Route::get('/showTrendProducts', [CategoryController::class, 'showTrendProducts']);
+
 
     Route::post('/createProduct/{id}', [ProductController::class, 'createProduct']);
     Route::post('/updateProduct/{id}', [ProductController::class, 'updateProduct']);

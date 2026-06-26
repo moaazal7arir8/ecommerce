@@ -16,18 +16,21 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use App\Models\User;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
 use GuzzleHttp\Psr7\Response;
 use Kreait\Firebase\Messaging\CloudMessage;
 use Kreait\Firebase\Messaging\Notification as FirebaseNotification;
 use Kreait\Laravel\Firebase\Facades\Firebase;
-
-class ProcessOrderJob implements ShouldQueue
+use Illuminate\Support\Facades\Cache; 
+class ProcessOrderJob implements ShouldQueue ,ShouldBeUnique 
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $cartId;
     protected $userId;
     protected $address;
+   
+    // public $uniqueFor = 60;
 
     public function __construct($cartId, $userId, $address)
     {
@@ -35,13 +38,27 @@ class ProcessOrderJob implements ShouldQueue
         $this->userId = $userId;
         $this->address = $address;
     }
-
+    
+    public function uniqueId()
+    {
+        return $this->cartId;
+    }
     public function handle()
     {
-        DB::beginTransaction();
+        
+        $lock = Cache::lock('order_lock_cart_' . $this->cartId, 60);
 
-        $user = User::find($this->userId);
+        
+        if (!$lock->get()) {
+            Log::warning("Order processing skipped. Cart ID {$this->cartId} is already locked.");
+            return;
+        }
+
         try {
+            DB::beginTransaction();
+
+            $user = User::find($this->userId);
+                
             $total = 0;
 
             // $tokens = DeviceToken::where('user_id', $this->userId)
@@ -50,12 +67,17 @@ class ProcessOrderJob implements ShouldQueue
 
             // if (empty($tokens)) {
             //     DB::rollBack();
+            // فك القفل فوراً قبل الخروج
+            // $lock->release();
             //     return;
             // }
 
             $cart = Cart::where('id', $this->cartId)->first();
             if (!$cart || $cart->items->isEmpty()) {
                 DB::rollBack();
+
+                // فك القفل فوراً قبل الخروج
+                $lock->release();
                 return;
             }
 
@@ -64,8 +86,8 @@ class ProcessOrderJob implements ShouldQueue
             $productIds = $items->pluck('product_id')->unique();
 
             $products = Product::whereIn('id', $productIds)
-                ->orderBy('id')
                 ->lockForUpdate()
+                ->orderBy('id')
                 ->get()
                 ->keyBy('id');
 
@@ -96,6 +118,9 @@ class ProcessOrderJob implements ShouldQueue
 
                     $user->increment('numberOfNotifications');
 
+                    // فك القفل فوراً قبل الخروج
+                    $lock->release();
+
                     return;
                 }
 
@@ -119,6 +144,10 @@ class ProcessOrderJob implements ShouldQueue
                     ]);
 
                     $user->increment('numberOfNotifications');
+
+                    // فك القفل فوراً قبل الخروج
+                    $lock->release();
+
                     return;
                 }
 
@@ -143,6 +172,10 @@ class ProcessOrderJob implements ShouldQueue
                     'user_id' => $this->userId
                 ]);
                 $user->increment('numberOfNotifications');
+
+                // فك القفل فوراً قبل الخروج
+                $lock->release();
+
                 return;
             }
             $user->decrement('wallet', $total);
@@ -189,9 +222,11 @@ class ProcessOrderJob implements ShouldQueue
             ]);
 
             $user->increment('numberOfNotifications');
+            // $cart->items()->delete();
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Order Job Failed: ' . $e->getMessage());
-        }
-    }
+            throw $e; 
 }
+    }
+    }

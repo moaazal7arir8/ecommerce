@@ -29,14 +29,14 @@ use App\Jobs\ProcessOrderJob;
 class OrderController extends Controller
 {
 
-    public function createOrder2(Request $request, $id)
+    public function createOrder2(Request $request)
     {
         $validateData = $request->validate([
             'address' => 'required|string'
         ]);
 
         $cart = Cart::with('items')
-            ->where('id', $id)
+            ->where('user_id', Auth::id())
             ->first();
 
         if (!$cart || $cart->items->isEmpty()) {
@@ -52,10 +52,12 @@ class OrderController extends Controller
         );
 
         return response()->json([
-            'message' => 'جار معالجة طلبك'
+            'message' => 'جار معالجة طلبك',
+            'server' => env('APP_NAME')
+
         ]);
     }
-    public function createOrder1(Request $request, $id)
+    public function createOrder1(Request $request)
     {
         $validateData = $request->validate([
             'address' => 'required|string'
@@ -64,7 +66,7 @@ class OrderController extends Controller
         $user = User::find(Auth::id());
 
         $cart = Cart::with('items')
-            ->where('id', $id)
+            ->where('user_id', $user->id)
             ->first();
 
         if (!$cart || $cart->items->isEmpty()) {
@@ -88,15 +90,17 @@ class OrderController extends Controller
 
             if (!$product) {
                 return response()->json(
-                    ['message' => 'أحد المنتجات غير متوفرة']
-                    , 400);
+                    ['message' => 'أحد المنتجات غير متوفرة'],
+                    400
+                );
             }
 
             if ($product->quantity < $item->item_quantity) {
 
                 return response()->json(
-                    ['message' => 'أحد المنتجات غير متوفرة بالكمية المطلوبة']
-                    , 400);
+                    ['message' => 'أحد المنتجات غير متوفرة بالكمية المطلوبة'],
+                    400
+                );
             }
             $total += $product->price * $item->item_quantity;
         }
@@ -108,7 +112,7 @@ class OrderController extends Controller
             ]);
         }
         $user->update([
-            'wallet'=>$user->wallet-$total
+            'wallet' => $user->wallet - $total
         ]);
 
         $order = Order::create([
@@ -130,9 +134,11 @@ class OrderController extends Controller
             ]);
 
             $product->update([
-                'quantity'=>$product->quantity-$item->item_quantity
+                'quantity' => $product->quantity - $item->item_quantity
             ]);
         }
+        // $cart->items()->delete();
+
         return response()->json([
             'message' => 'تم قيول طلبك بنجاح',
             'order_id' => $order->id

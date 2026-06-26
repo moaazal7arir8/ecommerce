@@ -16,20 +16,37 @@ class CartController extends Controller
             'items.*.quantity' => 'required|integer|min:1',
         ]);
 
-        $cart = Cart::create([
-            'user_id' => Auth::id(),
+        $userId = Auth::id();
+
+        // 1. جلب السلة الحالية للمستخدم أو إنشاء واحدة جديدة إذا لم تكن موجودة
+        $cart = Cart::firstOrCreate([
+            'user_id' => $userId
         ]);
 
+        // 2. إضافة المنتجات أو تحديث كميتها إذا كانت موجودة بالفعل في السلة
         foreach ($request->items as $item) {
-            CartItem::create([
-                'cart_id' => $cart->id,
-                'product_id' => $item['product_id'],
-                'item_quantity' => $item['quantity'],
-            ]);
-        }
-        return response()->json([
-            'message' => 'تم إنشاء السلة بنجاح',
 
+            // البحث عن المنتج داخل هذه السلة بالتحديد
+            $cartItem = CartItem::where('cart_id', $cart->id)
+                ->where('product_id', $item['product_id'])
+                ->first();
+
+            if ($cartItem) {
+                // إذا كان المنتج موجوداً مسبقاً، قم بزيادة الكمية
+                $cartItem->increment('item_quantity', $item['quantity']);
+            } else {
+                // إذا كان المنتج جديداً على السلة، قم بإنشائه
+                CartItem::create([
+                    'cart_id' => $cart->id,
+                    'product_id' => $item['product_id'],
+                    'item_quantity' => $item['quantity'],
+                ]);
+            }
+        }
+
+        return response()->json([
+            'message' => 'تم تحديث السلة بنجاح',
+            'cart_id' => $cart->id // إرجاع رقم السلة للتأكيد
         ]);
     }
     public function deleteCart()

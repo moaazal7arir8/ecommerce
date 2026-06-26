@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Carbon\Carbon;
 use App\Models\Category;
 use App\Models\CategoryUser;
 use Illuminate\Support\facades\DB;
@@ -85,27 +85,67 @@ class CategoryController extends Controller
         ]);
     }
 
-    // public function showCategoryProducts(Request $request, $categoryId)
-    // {
-    //     $products = Product::where('category_id', $categoryId)
-    //         ->orderBy('created_at', 'desc') 
-    //         ->paginate(10);
-
-    //     return response()->json([
-    //         '$products' => $products
-    //     ]);
-    // }
     public function showCategoryProducts(Request $request, $categoryId)
     {
-        $cacheKey = 'category_products_' . $categoryId . '_page_' . $request->get('page', 1);
-        $products = Cache::remember($cacheKey, now()->addHours(2), function () use ($categoryId) {
-            return Product::select('id', 'name', 'price', 'image', 'created_at')
-                ->where('category_id', $categoryId)
-                ->orderByDesc('created_at')
-                ->paginate();
-        });
+        $products = Product::where('category_id', $categoryId)
+            ->orderBy('created_at', 'desc') 
+            ->paginate(10);
+
         return response()->json([
-            'products' => $products
+            '$products' => $products
         ]);
     }
+    // public function showCategoryProducts(Request $request, $categoryId)
+    // {
+    //     $cacheKey = 'category_products_' . $categoryId . '_page_' . $request->get('page', 1);
+    //     $products = Cache::remember($cacheKey, now()->addHours(2), function () use ($categoryId) {
+    //         return Product::select('id', 'name', 'price', 'image', 'created_at')
+    //             ->where('category_id', $categoryId)
+    //             ->orderByDesc('created_at')
+    //             ->paginate();
+    //     });
+    //     return response()->json([
+    //         'products' => $products
+    //     ]);
+    // }
+    public function showTrendProducts(Request $request)
+{
+    $cacheKey = 'top_products_page_' . $request->get('page', 1);
+
+    $products = Cache::remember($cacheKey, now()->addHours(2), function () {
+
+        $startDate = Carbon::now()->subMonth()->startOfMonth(); 
+        $endDate = Carbon::now()->endOfMonth(); 
+
+        return Product::query()
+            ->select(
+                'products.id',
+                'products.name',
+                'products.price',
+                'products.image',
+                'products.created_at',
+                DB::raw('COALESCE(SUM(order_items.item_quantity), 0) as total_sold')
+            )
+            ->leftJoin('order_items', 'products.id', '=', 'order_items.product_id')
+            ->leftJoin('orders', function ($join) use ($startDate, $endDate) {
+                $join->on('order_items.order_id', '=', 'orders.id')
+                    ->where('orders.status', '!=', 'cancelled')
+                    ->whereBetween('orders.created_at', [$startDate, $endDate]);
+            })
+            ->groupBy(
+                'products.id',
+                'products.name',
+                'products.price',
+                'products.image',
+                'products.created_at'
+            )
+            ->orderByDesc('total_sold')
+            ->paginate(10);
+    });
+
+    return response()->json([
+        'products' => $products
+    ]);
+}
+
 }
